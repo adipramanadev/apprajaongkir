@@ -28,7 +28,7 @@ class HomeController extends GetxController {
         var response = await http.post(
             Uri.parse("https://api.rajaongkir.com/starter/cost"),
             headers: {
-              "content-type": "application/json",
+              "content-type": "application/x-www-form-urlencoded",
               "key": "c0da199848363eb45384a0d45fd536bf"
             },
             body: {
@@ -42,6 +42,17 @@ class HomeController extends GetxController {
             ["costs"] as List;
 
         ongkir = Ongkir.fromJsonList(body);
+        Get.defaultDialog(
+            titlePadding: EdgeInsets.all(20),
+            title: "Cek Ongkos Kirim",
+            content: Column(
+              children: ongkir
+                  .map((e) => ListTile(
+                        title: Text("${e.service!.toUpperCase()}"),
+                        subtitle: Text("${e.cost![0].value}"),
+                      ))
+                  .toList(),
+            ));
       } catch (e) {
         print(e);
       }
